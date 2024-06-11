@@ -1,9 +1,9 @@
 from pywebio import start_server
-from pywebio.input import input, input_group, TEXT, NUMBER
-from pywebio.output import put_text, put_image, put_markdown
+from pywebio.input import input, TEXT, NUMBER
+from pywebio.output import put_text, put_image
 from pywebio.session import set_env
 
-star_image_path = '/mnt/data/five_stars.jpeg'
+star_image_path = 'D:/user/Desktop/HillelPython67/five_stars.jpeg'
 
 
 def quiz():
@@ -12,9 +12,10 @@ def quiz():
     questions = [
         {"question": "Як вас звати?", "type": TEXT, "answer": None},
         {"question": "Коли вибухнула Чорнобильська АЕС?", "type": NUMBER, "answer": 1986},
-        {"question": "Яка столиця Східної Римської імперії?", "type": TEXT, "answer": "константинополь"},
+        {"question": "Який рік відкриття Америки Колумбом?", "type": NUMBER, "answer": 1492},
         {"question": "Скільки штатів у США?", "type": NUMBER, "answer": 50},
         {"question": "Назвіть рік початку Другої світової війни?", "type": NUMBER, "answer": 1939},
+        {"question": "В якому році розпався СРСР?", "type": NUMBER, "answer": 1991},
     ]
 
     total_score = 0
