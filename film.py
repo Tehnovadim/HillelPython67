@@ -1,6 +1,21 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import json
+import os
+
+
+def load_reviews():
+    if os.path.exists("reviews.json"):
+        with open("reviews.json", "r", encoding="utf-8") as file:
+            return json.load(file)
+    return []
+
+
+def save_reviews():
+    with open("reviews.json", "w", encoding="utf-8") as file:
+        json.dump(reviews_info, file, ensure_ascii=False, indent=4)
+
 
 def submit_review():
     name = name_entry.get()
@@ -15,8 +30,17 @@ def submit_review():
         messagebox.showwarning("Помилка", "Будь ласка, заповніть всі поля.")
         return
 
-    review_info = [name, movie_title, genre, review, rating, emotions, recommend]
+    review_info = {
+        "name": name,
+        "movie_title": movie_title,
+        "genre": genre,
+        "review": review,
+        "rating": rating,
+        "emotions": emotions,
+        "recommend": recommend
+    }
     reviews_info.append(review_info)
+    save_reviews()
 
     if rating >= 8:
         messagebox.showinfo("Успіх", "Ваш відгук успішно збережено!")
@@ -31,9 +55,27 @@ def submit_review():
     emotions_combobox.set('')
     recommend_var.set(None)
 
-    root.after(4000, root.destroy)
+    root.after(4000, show_reviews)
 
-reviews_info = []
+
+def show_reviews():
+    root.destroy()
+
+    reviews_window = tk.Tk()
+    reviews_window.title("Список відгуків")
+    reviews_window.geometry("500x300")
+
+    text_area = tk.Text(reviews_window, wrap=tk.WORD)
+    text_area.pack(expand=True, fill=tk.BOTH)
+
+    for review in reviews_info:
+        text_area.insert(tk.END,
+                         f"Ім'я: {review['name']}\nНазва фільму: {review['movie_title']}\nЖанр: {review['genre']}\nВідгук: {review['review']}\nРейтинг: {review['rating']}\nЕмоції: {review['emotions']}\nРекомендуєте: {review['recommend']}\n\n")
+
+    reviews_window.mainloop()
+
+
+reviews_info = load_reviews()
 
 root = tk.Tk()
 root.title("Збір відгуків на фільми")
@@ -64,10 +106,13 @@ emotions_combobox.grid(row=5, column=1, padx=10, pady=5)
 
 tk.Label(root, text="Рекомендуєте фільм іншим?").grid(row=6, column=0, sticky=tk.W, padx=10, pady=5)
 recommend_var = tk.StringVar(value=None)
-tk.Radiobutton(root, text="Так", variable=recommend_var, value="Так").grid(row=6, column=1, sticky=tk.W, padx=10, pady=5)
+tk.Radiobutton(root, text="Так", variable=recommend_var, value="Так").grid(row=6, column=1, sticky=tk.W, padx=10,
+                                                                           pady=5)
 tk.Radiobutton(root, text="Ні", variable=recommend_var, value="Ні").grid(row=6, column=1, padx=10, pady=5)
 
 submit_button = tk.Button(root, text="Надіслати", command=submit_review)
 submit_button.grid(row=7, column=1, padx=10, pady=10, sticky=tk.E)
 
 root.mainloop()
+
+print(reviews_info)
