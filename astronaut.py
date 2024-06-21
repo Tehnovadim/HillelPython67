@@ -1,23 +1,30 @@
 import requests
+import time
 
-data = {
-    "people": [
-        {"craft": "ISS", "name": "Oleg Kononenko"},
-        {"craft": "ISS", "name": "Nikolai Chub"},
-        {"craft": "ISS", "name": "Tracy Caldwell Dyson"},
-        {"craft": "ISS", "name": "Matthew Dominick"},
-        {"craft": "ISS", "name": "Michael Barratt"},
-        {"craft": "ISS", "name": "Jeanette Epps"},
-        {"craft": "ISS", "name": "Alexander Grebenkin"},
-        {"craft": "ISS", "name": "Butch Wilmore"},
-        {"craft": "ISS", "name": "Sunita Williams"},
-        {"craft": "Tiangong", "name": "Li Guangsu"},
-        {"craft": "Tiangong", "name": "Li Cong"},
-        {"craft": "Tiangong", "name": "Ye Guangfu"}
-    ],
-    "number": 12,
-    "message": "success"
-}
 
-for astronaut in data['people']:
-    print(astronaut['name'])
+def fetch_astronauts():
+    try:
+        response = requests.get("http://api.open-notify.org/astros.json")
+        response.raise_for_status()
+        astronauts_data = response.json()
+        return [astronaut["name"] for astronaut in astronauts_data["people"]]
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to fetch astronauts: {e}")
+        return []
+
+
+def main():
+    while True:
+        astronauts_list = fetch_astronauts()
+        if astronauts_list:
+            print("Astronauts currently in space:")
+            for astronaut in astronauts_list:
+                print(f"- {astronaut}")
+        else:
+            print("No data available.")
+
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    main()
