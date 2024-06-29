@@ -3,7 +3,7 @@ from typing import List, Dict
 
 
 def get_zoo_data() -> List[Dict]:
-    url = 'https://script.google.com/macros/s/AKfycbwuQXnZ_4Wj6pVYL9ZdP1VGkapaH3QdRUaLv-fDEQYEucxobIQZl6fmAOaJGzjvNQn0/exec'
+    url = 'https://script.google.com/macros/s/AKfycbyJpvxIeUYvPnEVgPIGq_IkF89klY_0eVCtCPWdOq_soqx4D-7_C9ePkvDsyeeSMLyC/exec'
     response = requests.get(url)
 
     if response.status_code != 200:
@@ -21,7 +21,7 @@ def calculate_poisonous_care_cost(data: List[Dict]) -> float:
 
     for item in data:
         try:
-            if item['is_poisonous'].lower() == 'так':
+            if item['is_poisonous']:
                 care_cost = float(item['care_cost'])
                 number_of_animals = int(item['number_of_animals'])
                 total_cost += care_cost * number_of_animals
