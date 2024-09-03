@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Туристическое агентство</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+
+        .trips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .trip {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-filter form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-filter input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .search-filter button {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-filter button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Туры нашего агентства</h1>
+    <div class="search-filter">
+        <form method="GET" action="/">
+            <input type="text" name="search" placeholder="Поиск по направлению...">
+            <button type="submit">Поиск</button>
+        </form>
+    </div>
+    <div class="trips">
+        {% for trip in trips %}
+        <div class="trip">
+            <h2>{{ trip.name }}</h2>
+            <p><strong>Направление:</strong> {{ trip.destination }}</p>
+            <p><strong>Цена:</strong> ${{ trip.price }}</p>
+            <p>{{ trip.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
